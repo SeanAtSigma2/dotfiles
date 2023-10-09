@@ -1,0 +1,89 @@
+set realname = "`op read op://Private/Mutt/name`"
+set from = "`op read op://Private/Mutt/email`"
+set use_from = yes
+set envelope_from = yes
+
+# Ensure TLS is enforced
+set ssl_starttls = yes
+set ssl_force_tls = yes
+
+# Protocol: smtp for TLS (587), smtps for SSL (465)
+# Reads passwords from 1password CLI
+set imap_pass="`op read op://Private/Mutt/password`"
+set smtp_pass="`op read op://Private/Mutt/password`"
+set smtp_url = "`op read op://Private/Mutt/smtp_url`"
+set imap_user = "`op read op://Private/Mutt/email`"
+set imap_keepalive = 900
+set folder = "imaps://imap.gmail.com:993"
+set spoolfile = "+INBOX"
+set record = "+[Gmail]/Sent Mail"
+# Set drafts folder
+set postponed = "+[Gmail]/Drafts"
+set header_cache = "~/.mutt/cache/headers"
+set message_cachedir = "~/.mutt/cache/bodies"
+set certificate_file = "~/.mutt/certificates"
+set move = no
+
+# Needed to get and display mail (imap-fetch-mail)
+set charset = "utf-8"
+set record = ""
+
+bind editor <space> noop
+set copy              = no
+# Use nvim but don't force text width (looks terible if read on a phone)
+set editor = "nvim +':set textwidth=0'"
+set move              = no
+# Directory to save sent messages into
+set spoolfile         = "+INBOX"
+set text_flowed       = yes
+
+# Gmail-style keyboard shortcuts
+macro index,pager y "<save-message>=[Gmail]/All Mail<enter><enter>" "Archive"
+
+# Sort by threads
+set sort = threads
+# Sort threads by last date recieved - newest first
+set sort_aux = reverse-last-date-received
+# Show date in year/month/day hour:minute format
+set date_format="%y/%m/%d %I:%M%p"
+# Mailcap file is used to tell mutt how to open different types of file
+set mailcap_path = ~/.mutt/mailcap
+# Tells Mutt to automatically view files with these mime types
+auto_view text/html
+# Order to try and show multipart emails
+alternative_order text/plain text/enriched text/html
+
+##############
+#  Contacts  #
+##############
+
+# When looking for contacts, use this command
+set query_command= "abook --mutt-query '%s'"
+# Add current sender to address book
+macro index,pager  a "<pipe-message>abook --add-email-quiet<return>" "Add this sender to Abook"
+# Auto-complete email addresses by pushing tab
+bind editor <Tab> complete-query
+
+# Speed up folders switch
+set sleep_time = 0
+
+# Vimmy keybindings
+# https://ryanlue.com/posts/2017-05-21-mutt-the-vim-way
+bind generic,index,pager \Cd       half-down
+bind generic,index,pager \Cu       half-up
+
+# From https://neomutt.org/guide/gettingstarted.html
+set sidebar_visible
+set sidebar_format = "%B%<F? [%F]>%* %<N?%N/>%S"
+set mail_check_stats
+
+# set pager = "nvimpager"
+# Automatically view html emails using w3m
+# auto_view text/html
+
+# Use urlscan package to extract URLs from an email with Ctrl + b
+macro index,pager \cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+macro attach,compose \cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+
+# Taken from https://superuser.com/a/333921
+# macro index,pager \cb ": unset wait_key; set pipe_decode\n|w3m\n: set wait_key; unset pipe_decode\n" "call w3m to extract URLs out of a message"
