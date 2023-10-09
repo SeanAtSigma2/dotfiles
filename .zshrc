@@ -1,5 +1,7 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH="$HOME/installed-packages/nvimpager:$PATH"
+export PATH="$HOME/installed-packages/nvimpager:$HOME/.local/bin:$PATH"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -110,6 +112,8 @@ source $ZSH/oh-my-zsh.sh
 #
 export TERM="xterm-256color"
 export EDITOR="nvim"
+export BROWSER='wslview'
+export PAGER=nvimpager
 export AWS_CDK_SANDBOX="slawrence"
 export AWS_PROFILE="dev"
 export AWS_REGION="us-east-1"
@@ -121,6 +125,12 @@ alias zshrcu="source ~/.zshrc"
 alias vimrc="nvim ~/.config/nvim"
 alias vimrcu="source ~/.config/nvim/init.lua"
 alias vi="nvim"
+alias web="w3m"
+
+function ddg() {
+  URL="https://duckduckgo.com?q=$1"
+  w3m "$URL"
+}
 
 # TMUX
 alias tl="tmux ls"
@@ -137,10 +147,13 @@ function tk() {
 	tmux kill-session -t $1
 }
 
+function email() {
+  neomutt
+}
 
 function cdk_deploy() {
-	  pnpm -C apps/infrastructure run cdk:deploy \
-		  --context sandbox=$AWS_CDK_SANDBOX \
+  pnpm -C apps/infrastructure run cdk:deploy \
+    --context sandbox=$AWS_CDK_SANDBOX \
 		  --profile $AWS_PROFILE \
 		  "$AWS_STACK_NAME"
 }
@@ -168,6 +181,10 @@ function sigma_start() {
 
 function sigma_dev() {
   ./run-dev-experimental.sh
+}
+
+function 1password_login() {
+  eval $(op signin)
 }
 
 # tabtab source for packages
