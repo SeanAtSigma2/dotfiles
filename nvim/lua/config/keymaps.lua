@@ -12,6 +12,10 @@ vim.keymap.set("n", "<leader>j", "<C-w>j")
 vim.keymap.set("n", "<leader>k", "<C-w>k")
 vim.keymap.set("n", "<leader>l", "<C-w>l")
 
+-- save with jk
+vim.keymap.set("n", "<leader>jk", vim.cmd.w)
+vim.keymap.set("n", "<leader>jkl", vim.cmd.wq)
+
 -- Go to start of line
 vim.keymap.set("n", "L", "$")
 -- Go to end of line
@@ -24,19 +28,6 @@ vim.keymap.set("n", "<leader>bsh", vim.cmd.split)
 
 -- Start lazygit
 vim.keymap.set("n", "<leader>lg", vim.cmd.LazyGit)
-
--- Save on <leader>w
-vim.keymap.set("n", "<leader>w", vim.cmd.write)
-
--- Write all on <leader>wa
-vim.keymap.set("n", "<leader>wa", function()
-  vim.cmd("wa")
-end)
-
--- Write close on <leader>wq
-vim.keymap.set("n", "<leader>wq", function()
-  vim.cmd("wq")
-end)
 
 local builtin = require("telescope.builtin")
 
@@ -68,26 +59,38 @@ if is_inside_work_tree[cwd] == nil then
   is_inside_work_tree[cwd] = vim.v.shell_error == 0
 end
 
--- Find in .git files if in git repo or all files if not
+-- Find all files in current directory, respects gitignore
 vim.keymap.set("n", "<leader>fs", function()
-  if is_inside_work_tree[cwd] then
-    builtin.git_files(find_files_opts)
-  else
-    builtin.find_files(find_files_opts)
-  end
-end)
-
--- Search all files. Useful for when a file isn't in git yet
-vim.keymap.set("n", "<leader>fsa", function()
   builtin.find_files(find_files_opts)
 end)
 
--- Search text in all files
+-- Search text in all files, respects gitignore
 vim.keymap.set("n", "<leader>fg", function()
   find_grep_opts.search = vim.fn.input("Grep > ")
   builtin.grep_string(find_grep_opts)
 end)
 
+-- Open file explorer
 vim.keymap.set("n", "<leader>fe", function()
   vim.cmd("Neotree toggle reveal_force_cwd")
+end)
+
+vim.keymap.set("n", "<leader>hm", function()
+  require("harpoon.mark").toggle_file()
+end)
+
+vim.keymap.set("n", "<leader>hl", function()
+  require("harpoon.ui").nav_next()
+end)
+
+vim.keymap.set("n", "<leader>hh", function()
+  require("harpoon.ui").nav_prev()
+end)
+
+vim.keymap.set("n", "<leader>hs", function()
+  require("harpoon.ui").toggle_quick_menu()
+end)
+
+vim.keymap.set("n", "<leader>hs", function()
+  require("harpoon.ui").toggle_quick_menu()
 end)
