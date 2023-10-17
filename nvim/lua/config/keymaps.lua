@@ -2,9 +2,9 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
--- Move current line up and down
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+-- Move current line up and down when in visual mode
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 -- Navigate buffers with leader -> direction
 vim.keymap.set("n", "<leader>h", "<C-w>h")
@@ -14,6 +14,7 @@ vim.keymap.set("n", "<leader>l", "<C-w>l")
 
 -- save with jk
 vim.keymap.set("n", "<leader>jk", vim.cmd.w)
+-- save and quit with jkl
 vim.keymap.set("n", "<leader>jkl", vim.cmd.wq)
 
 -- Go to start of line
@@ -70,11 +71,6 @@ vim.keymap.set("n", "<leader>fg", function()
   builtin.grep_string(find_grep_opts)
 end)
 
--- Open file explorer
-vim.keymap.set("n", "<leader>fe", function()
-  vim.cmd("Neotree toggle reveal_force_cwd")
-end)
-
 vim.keymap.set("n", "<leader>hm", function()
   require("harpoon.mark").toggle_file()
 end)
@@ -85,10 +81,6 @@ end)
 
 vim.keymap.set("n", "<leader>hh", function()
   require("harpoon.ui").nav_prev()
-end)
-
-vim.keymap.set("n", "<leader>hs", function()
-  require("harpoon.ui").toggle_quick_menu()
 end)
 
 vim.keymap.set("n", "<leader>hs", function()
