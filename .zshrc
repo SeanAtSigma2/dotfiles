@@ -2,6 +2,8 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="$HOME/installed-packages/nvimpager:$PATH"
 export PATH="$HOME/installed-packages/nvimpager:$HOME/.local/bin:$PATH"
+export PATH="$PATH:/usr/local/go/bin"
+export PATH="$PATH:/$HOME/go/bin"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -126,6 +128,7 @@ alias vimrc="nvim ~/.config/nvim"
 alias vimrcu="source ~/.config/nvim/init.lua"
 alias vi="nvim"
 alias web="w3m"
+alias slack="weechat"
 
 function ddg() {
   URL="https://duckduckgo.com?q=$1"
@@ -187,6 +190,38 @@ function 1password_login() {
   eval $(op signin)
 }
 
+function jira_login() {
+  if [[ -z "$JIRA_API_TOKEN" ]] then
+    export JIRA_API_TOKEN=$(op read op://Private/JiraCLIToken/password)
+  fi
+}
+
+function e2e_login() {
+  export E2E_EMAIL=$(op read op://Private/E2ELocal/email)
+  export E2E_PASSWORD=$(op read op://Private/E2ELocal/password)
+}
+
+alias todo="jira issue list --assignee sean@sigma2.io --status 'To Do'"
+alias todo_unassigned="jira issue list --component Engineering --status 'To Do' --jql 'assignee IS EMPTY'"
+alias in_progress="jira issue list --assignee sean@sigma2.io --status 'In Progress'"
+alias issue_new="jira issue create --assignee sean@sigma2.io --component Engineering" 
+
 # tabtab source for packages
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/sean/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/sean/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/sean/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/sean/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

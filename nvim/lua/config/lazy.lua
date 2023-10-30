@@ -14,24 +14,24 @@ require("lazy").setup({
     -- { import = "lazyvim.plugins.extras.ui.mini-animate" },
     -- import/override with your plugins
 
-    -- Dap is a debugger
-    { import = "lazyvim.plugins.extras.dap.core" },
-    -- Start screen
-    { import = "lazyvim.plugins.extras.ui.mini-starter" },
-    -- Project manager
-    { import = "lazyvim.plugins.extras.util.project" },
-    -- Formatter
-    { import = "lazyvim.plugins.extras.formatting.prettier" },
-    -- Linter
-    { import = "lazyvim.plugins.extras.linting.eslint", enabled = false },
-    -- AI Assistant
-    { import = "lazyvim.plugins.extras.coding.copilot" },
-    -- Languages
-    { import = "lazyvim.plugins.extras.lang.docker" },
-    { import = "lazyvim.plugins.extras.lang.json" },
-    { import = "lazyvim.plugins.extras.lang.tailwind" },
-    { import = "lazyvim.plugins.extras.lang.typescript" },
-    { import = "lazyvim.plugins.extras.lang.yaml" },
+    -- -- Dap is a debugger
+    -- { import = "lazyvim.plugins.extras.dap.core" },
+    -- -- Start screen
+    -- { import = "lazyvim.plugins.extras.ui.mini-starter" },
+    -- -- Project manager
+    -- { import = "lazyvim.plugins.extras.util.project" },
+    -- -- Formatter
+    -- { import = "lazyvim.plugins.extras.formatting.prettier" },
+    -- -- Linter
+    -- { import = "lazyvim.plugins.extras.linting.eslint", enabled = false },
+    -- -- AI Assistant
+    -- { import = "lazyvim.plugins.extras.coding.copilot" },
+    -- -- Languages
+    -- { import = "lazyvim.plugins.extras.lang.docker" },
+    -- { import = "lazyvim.plugins.extras.lang.json" },
+    -- { import = "lazyvim.plugins.extras.lang.tailwind" },
+    -- { import = "lazyvim.plugins.extras.lang.typescript" },
+    -- { import = "lazyvim.plugins.extras.lang.yaml" },
     { import = "plugins" },
   },
   defaults = {

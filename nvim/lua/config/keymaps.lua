@@ -16,6 +16,8 @@ vim.keymap.set("n", "<leader>l", "<C-w>l")
 vim.keymap.set("n", "<leader>jk", vim.cmd.w)
 -- save and quit with jkl
 vim.keymap.set("n", "<leader>jkl", vim.cmd.wq)
+-- quit with jkl;
+vim.keymap.set("n", "<leader>jkl;", vim.cmd.q)
 
 -- Go to start of line
 vim.keymap.set("n", "L", "$")

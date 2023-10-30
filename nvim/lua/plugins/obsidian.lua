@@ -18,6 +18,7 @@ return {
     },
     { "<leader>nd", "<cmd>ObsidianToday<cr>", desc = "Create new daily note" },
     { "<leader>nt", "<cmd>ObsidianTemplate<cr>", desc = "Insert note template" },
+    { "<leader>nl", "<cmd>ObsidianOpen<cr>", desc = "Open note" },
   },
   dependencies = {
     -- Required.
@@ -25,6 +26,9 @@ return {
   },
   opts = {
     dir = "/home/sean/workplace/notes",
+    workspaces = {
+      { name = "workplace", path = "/home/sean/workplace/notes" },
+    },
     daily_notes = {
       folder = "daily-notes",
       template = "daily-note.md",
