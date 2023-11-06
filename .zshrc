@@ -139,15 +139,21 @@ function ddg() {
 alias tl="tmux ls"
 
 function tn() {
-	tmux new-session -s $1
+	# tmux new-session -s $1
+  tmuxinator start "$1" --name "$1" --project-config  "~/.tmuxinator/$1.yml"
 }
 
 function ta() {
-	tmux attach-session -t $1
+	tmux attach-session -t "$1"
+}
+
+function tl() {
+  tmuxinator list 
 }
 
 function tk() {
-	tmux kill-session -t $1
+	# tmux ki-session -t $1
+  tmuxinator stop $1
 }
 
 function email() {
@@ -204,7 +210,13 @@ function e2e_login() {
 alias todo="jira issue list --assignee sean@sigma2.io --status 'To Do'"
 alias todo_unassigned="jira issue list --component Engineering --status 'To Do' --jql 'assignee IS EMPTY'"
 alias in_progress="jira issue list --assignee sean@sigma2.io --status 'In Progress'"
-alias issue_new="jira issue create --assignee sean@sigma2.io --component Engineering" 
+
+function issue_new() {
+  jira issue create --assignee sean!sigma2.io \
+    --component Engineering \
+    --custom change-type "$1" \
+    --custom story-point-estimate "$2" "@"
+}
 
 # tabtab source for packages
 # uninstall by removing these lines

@@ -4,6 +4,7 @@ set -e
 
 # TMUX
 cp ~/.tmux.conf ./.tmux.conf
+cp ~/.config/tmuxinator/* ./tmuxinator/
 
 # ZSH
 cp ~/.zshrc ./.zshrc
