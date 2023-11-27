@@ -64,13 +64,25 @@ end
 
 -- Find all files in current directory, respects gitignore
 vim.keymap.set("n", "<leader>fs", function()
-  builtin.find_files(find_files_opts)
+  local opts = {
+    find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
+  }
+  builtin.find_files(opts)
 end)
+
+local telescope_config = require("telescope.config")
+local vimgrep_arguments = { unpack(telescope_config.values.vimgrep_arguments) }
+
+-- I want to search in hidden/dot files.
+table.insert(vimgrep_arguments, "--hidden")
+-- I don't want to search in the `.git` directory.
+table.insert(vimgrep_arguments, "--glob")
+table.insert(vimgrep_arguments, "!**/.git/*")
 
 -- Search text in all files, respects gitignore
 vim.keymap.set("n", "<leader>fg", function()
-  find_grep_opts.search = vim.fn.input("Grep > ")
-  builtin.grep_string(find_grep_opts)
+  vimgrep_arguments.search = vim.fn.input("Grep > ")
+  builtin.grep_string(vimgrep_arguments)
 end)
 
 vim.keymap.set("n", "<leader>hm", function()
