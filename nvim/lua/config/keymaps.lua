@@ -32,6 +32,11 @@ vim.keymap.set("n", "<leader>bsh", vim.cmd.split)
 -- Start lazygit
 vim.keymap.set("n", "<leader>lg", vim.cmd.LazyGit)
 
+-- Open file explorer in the current directory of the file your're editing
+vim.keymap.set("n", "<leader>fe", function()
+  vim.cmd("Neotree reveal_force_cwd")
+end)
+
 local builtin = require("telescope.builtin")
 
 local function is_git_repo()

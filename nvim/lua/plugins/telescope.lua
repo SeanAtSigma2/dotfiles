@@ -18,6 +18,8 @@ return {
       telescope.load_extension("fzf")
       telescope.load_extension("harpoon")
       telescope.load_extension("aerial")
+      telescope.load_extension("media_files")
+
       telescope.setup({
         defaults = {
           -- `hidden = true` is not supported in text grep commands.
