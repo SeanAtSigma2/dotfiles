@@ -90,18 +90,20 @@ vim.keymap.set("n", "<leader>fg", function()
   builtin.grep_string(vimgrep_arguments)
 end)
 
+local harpoon = require("harpoon")
+
 vim.keymap.set("n", "<leader>hm", function()
-  require("harpoon.mark").toggle_file()
+  harpoon:list():append()
 end)
 
 vim.keymap.set("n", "<leader>hl", function()
-  require("harpoon.ui").nav_next()
+  harpoon:list():next()
 end)
 
 vim.keymap.set("n", "<leader>hh", function()
-  require("harpoon.ui").nav_prev()
+  harpoon:list():prev()
 end)
 
 vim.keymap.set("n", "<leader>hs", function()
-  require("harpoon.ui").toggle_quick_menu()
-end)
+  harpoon.ui:toggle_quick_menu(harpoon:list())
+end, { desc = "Open harpoon window" })

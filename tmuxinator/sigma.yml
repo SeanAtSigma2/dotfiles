@@ -50,11 +50,13 @@ windows:
       # Synchronize all panes of this window, can be enabled before or after the pane commands run.
       # 'before' represents legacy functionality and will be deprecated in a future release, in favour of 'after'
       # synchronize: after
-  - server: aws sso login --profile dev && ./run-dev-experimental.sh
+  - server: start_sigma
   - test: pnpm -C apps/sigma2-ui run test
+  - storybook: pnpm -C apps/sigma2-ui run storybook
   - email: 1password_login && email
   - slack: 1password_login && slack
-  - jira: 1password_login && jira_login && in_progress
+  - jira: 1password_login && jira_login
+  - gpt: 1password_login && gpt
   - notes:
       root: ~/workplace/notes/
       panes:

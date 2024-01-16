@@ -2,6 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="$HOME/installed-packages/nvimpager:$PATH"
 export PATH="$HOME/installed-packages/nvimpager:$HOME/.local/bin:$PATH"
+export PATH="$HOME/installed-packages/tenere-0.9/target/release/tenere:$PATH"
 export PATH="$PATH:/usr/local/go/bin"
 export PATH="$PATH:/$HOME/go/bin"
 
@@ -116,10 +117,6 @@ export TERM="xterm-256color"
 export EDITOR="nvim"
 export BROWSER='wslview'
 export PAGER=nvimpager
-export AWS_CDK_SANDBOX="slawrence"
-export AWS_PROFILE="dev"
-export AWS_REGION="us-east-1"
-export AWS_STACK_NAME="SigmaSquaredStack--dev--$AWS_CDK_SANDBOX"
 
 alias lg="lazygit"
 alias zshrc="nvim ~/.zshrc"
@@ -133,6 +130,10 @@ alias slack="weechat"
 function ddg() {
   URL="https://duckduckgo.com?q=$1"
   w3m "$URL"
+}
+
+function read_url() {
+  readable "https://$1" | w3m -T text/html
 }
 
 # TMUX
@@ -160,36 +161,17 @@ function email() {
   neomutt
 }
 
-function cdk_deploy() {
-  pnpm -C apps/infrastructure run cdk:deploy \
-    --context sandbox=$AWS_CDK_SANDBOX \
-		  --profile $AWS_PROFILE \
-		  "$AWS_STACK_NAME"
+function start_sigma() {
+  aws sso login --profile dev && \
+  pnpm dev --stack-name "SigmaSquaredStack--dev--slawrence" \
+  --aws-profile "dev" \
+  --region-name  "us-east-1"
 }
 
-function sigma_build() {
-	pnpm run local \
-		--stack-name $AWS_STACK_NAME \
-		--region-name $AWS_REGION \
-    --aws-profile $AWS_PROFILE \
-		--app-name ui \
-		--app-name api \
-		--app-name core \
-		--app-name end-to-end \
-		--frontend-flags local-api
-}
-
-function sigma_start() {
-	pnpm run hotreload \
-		--stack-name $AWS_STACK_NAME \
-		--region-name $AWS_REGION \
-    --aws-profile $AWS_PROFILE \
-		--app-name ui \
-		--app-name api
-}
-
-function sigma_dev() {
-  ./run-dev-experimental.sh
+function start_sigma_no_login() {
+  pnpm dev --stack-name "SigmaSquaredStack--dev--slawrence" \
+  --aws-profile "dev" \
+  --region-name  "us-east-1"
 }
 
 function 1password_login() {
@@ -202,38 +184,43 @@ function jira_login() {
   fi
 }
 
-function e2e_login() {
-  export E2E_EMAIL=$(op read op://Private/E2ELocal/email)
-  export E2E_PASSWORD=$(op read op://Private/E2ELocal/password)
-}
-
 alias todo="jira issue list --assignee sean@sigma2.io --status 'To Do'"
 alias todo_unassigned="jira issue list --component Engineering --status 'To Do' --jql 'assignee IS EMPTY'"
 alias in_progress="jira issue list --assignee sean@sigma2.io --status 'In Progress'"
 
-function issue_new() {
-  jira issue create --assignee sean!sigma2.io \
-    --component Engineering \
-    --custom change-type "$1" \
-    --custom story-point-estimate "$2" "@"
+function issue_search() {
+  jira issue list --jql "text ~ '$1'"
+}
+
+function gpt() {
+  if [[ -z "$OPENAI_API_KEY" ]] then
+    export OPENAI_API_KEY=$(op read op://Private/OpenAISecret/password)
+  fi
+
+  ~/installed-packages/tenere-0.9/target/release/tenere
 }
 
 # tabtab source for packages
 # uninstall by removing these lines
 [[ -f ~/.config/tabtab/zsh/__tabtab.zsh ]] && . ~/.config/tabtab/zsh/__tabtab.zsh || true
 
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/sean/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/sean/mambaforge/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/sean/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/sean/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/sean/mambaforge/etc/profile.d/conda.sh" ]; then
+        . "/home/sean/mambaforge/etc/profile.d/conda.sh"
     else
-        export PATH="/home/sean/miniconda3/bin:$PATH"
+        export PATH="/home/sean/mambaforge/bin:$PATH"
     fi
 fi
 unset __conda_setup
+
+if [ -f "/home/sean/mambaforge/etc/profile.d/mamba.sh" ]; then
+    . "/home/sean/mambaforge/etc/profile.d/mamba.sh"
+fi
 # <<< conda initialize <<<
 
